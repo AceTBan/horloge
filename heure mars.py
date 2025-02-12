@@ -32,13 +32,47 @@ def obtenir_heure_mercure():
     mercury_time = datetime.time(mercury_hours, mercury_minutes, mercury_seconds)
     return mercury_time
 
+def obtenir_heure_venus():
+    URL = "https://api.le-systeme-solaire.net/rest/bodies/venus"
+    response = requests.get(URL)
+    data = response.json()
+    sideral_rotation = data["sideralRotation"]
+    venus_hours_per_day = 2802.0  # Durée d'un jour vénusien en heures terrestres
+    current_time = time.time()
+    current_earth_time = datetime.datetime.now().time()
+    venus_time_in_earth_seconds = (current_time % (venus_hours_per_day * 3600))
+    venus_hours = int((venus_time_in_earth_seconds // 3600) % 24)
+    venus_minutes = int((venus_time_in_earth_seconds % 3600) // 60)
+    venus_seconds = int(venus_time_in_earth_seconds % 60)
+    venus_time = datetime.time(venus_hours, venus_minutes, venus_seconds)
+    return venus_time
+
+def obtenir_heure_jupiter():
+    URL = "https://api.le-systeme-solaire.net/rest/bodies/jupiter"
+    response = requests.get(URL)
+    data = response.json()
+    sideral_rotation = data["sideralRotation"]
+    jupiter_hours_per_day = 9.925  # Durée d'un jour jupitérien en heures terrestres
+    current_time = time.time()
+    current_earth_time = datetime.datetime.now().time()
+    jupiter_time_in_earth_seconds = (current_time % (jupiter_hours_per_day * 3600))
+    jupiter_hours = int((jupiter_time_in_earth_seconds // 3600) % 24)
+    jupiter_minutes = int((jupiter_time_in_earth_seconds % 3600) // 60)
+    jupiter_seconds = int(jupiter_time_in_earth_seconds % 60)
+    jupiter_time = datetime.time(jupiter_hours, jupiter_minutes, jupiter_seconds)
+    return jupiter_time
+
 while True:
     current_earth_time, mars_time = obtenir_heure_mars()
     mercury_time = obtenir_heure_mercure()
+    venus_time = obtenir_heure_venus()
+    jupiter_time = obtenir_heure_jupiter()
 
     print(f"L'heure actuelle sur Terre est : {current_earth_time}")
     print(f"L'heure actuelle sur Mars est : {mars_time}")
     print(f"L'heure actuelle sur Mercure est : {mercury_time}")
+    print(f"L'heure actuelle sur Vénus est : {venus_time}")
+    print(f"L'heure actuelle sur Jupiter est : {jupiter_time}")
 
     choix = input("Appuyez sur 'r' pour rafraîchir, 'q' pour quitter : ")
     if choix.lower() == 'q':
