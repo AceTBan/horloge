@@ -92,6 +92,36 @@ def obtenir_heure_uranus():
     uranus_time = datetime.time(uranus_hours, uranus_minutes, uranus_seconds)
     return uranus_time
 
+def obtenir_heure_neptune():
+    URL = "https://api.le-systeme-solaire.net/rest/bodies/neptune"
+    response = requests.get(URL)
+    data = response.json()
+    sideral_rotation = data["sideralRotation"]
+    neptune_hours_per_day = 16.11  # Durée d'un jour neptunien en heures terrestres
+    current_time = time.time()
+    current_earth_time = datetime.datetime.now().time()
+    neptune_time_in_earth_seconds = (current_time % (neptune_hours_per_day * 3600))
+    neptune_hours = int((neptune_time_in_earth_seconds // 3600) % 24)
+    neptune_minutes = int((neptune_time_in_earth_seconds % 3600) // 60)
+    neptune_seconds = int(neptune_time_in_earth_seconds % 60)
+    neptune_time = datetime.time(neptune_hours, neptune_minutes, neptune_seconds)
+    return neptune_time
+
+def obtenir_heure_pluton():
+    URL = "https://api.le-systeme-solaire.net/rest/bodies/pluto"
+    response = requests.get(URL)
+    data = response.json()
+    sideral_rotation = data["sideralRotation"]
+    pluto_hours_per_day = 153.2928  # Durée d'un jour plutonien en heures terrestres
+    current_time = time.time()
+    current_earth_time = datetime.datetime.now().time()
+    pluto_time_in_earth_seconds = (current_time % (pluto_hours_per_day * 3600))
+    pluto_hours = int((pluto_time_in_earth_seconds // 3600) % 24)
+    pluto_minutes = int((pluto_time_in_earth_seconds % 3600) // 60)
+    pluto_seconds = int(pluto_time_in_earth_seconds % 60)
+    pluto_time = datetime.time(pluto_hours, pluto_minutes, pluto_seconds)
+    return pluto_time
+
 while True:
     current_earth_time, mars_time = obtenir_heure_mars()
     mercury_time = obtenir_heure_mercure()
@@ -99,6 +129,8 @@ while True:
     jupiter_time = obtenir_heure_jupiter()
     saturn_time = obtenir_heure_saturne()
     uranus_time = obtenir_heure_uranus()
+    neptune_time = obtenir_heure_neptune()
+    pluto_time = obtenir_heure_pluton()
 
     print(f"L'heure actuelle sur Terre est : {current_earth_time}")
     print(f"L'heure actuelle sur Mars est : {mars_time}")
@@ -107,6 +139,8 @@ while True:
     print(f"L'heure actuelle sur Jupiter est : {jupiter_time}")
     print(f"L'heure actuelle sur Saturne est : {saturn_time}")
     print(f"L'heure actuelle sur Uranus est : {uranus_time}")
+    print(f"L'heure actuelle sur Neptune est : {neptune_time}")
+    print(f"L'heure actuelle sur Pluton est : {pluto_time}")
 
     choix = input("Appuyez sur 'r' pour rafraîchir, 'q' pour quitter : ")
     if choix.lower() == 'q':
